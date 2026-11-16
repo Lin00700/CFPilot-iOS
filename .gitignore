@@ -1,0 +1,22 @@
+# macOS
+.DS_Store
+
+# Xcode
+build/
+DerivedData/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcuserstate
+*.ipa
+Payload/
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# 生成的工程文件（用 xcodegen generate 重建）
+CFPilot.xcodeproj/
+
+# 本地环境
+.env
+.env.*
