@@ -14,7 +14,7 @@ final class DeployViewModel: ObservableObject {
     @Published var controlProject: String = ""
     @Published var dataProject: String = ""
 
-    @Published var accounts: [(id: String, name: String)] = []
+    @Published var accounts: [CFAccount] = []
     @Published var isFetchingAccounts: Bool = false
     @Published var accountError: String?
 

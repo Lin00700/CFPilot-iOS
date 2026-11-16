@@ -196,13 +196,15 @@ final class CloudflareAPI {
         return JSONHelper.string(JSONHelper.dictionary(result)["status"])
     }
 
-    func listAccounts() async throws -> [(id: String, name: String)] {
+    func listAccounts() async throws -> [CFAccount] {
         let result = try await send(method: "GET", path: "/accounts?per_page=50")
-        return JSONHelper.dictionaryArray(result).compactMap { item in
+        var accounts: [CFAccount] = []
+        for item in JSONHelper.dictionaryArray(result) {
             let id = JSONHelper.string(item["id"])
-            guard !id.isEmpty else { return nil }
-            return (id, JSONHelper.string(item["name"]))
+            if id.isEmpty { continue }
+            accounts.append(CFAccount(id: id, name: JSONHelper.string(item["name"])))
         }
+        return accounts
     }
 
     // MARK: - KV

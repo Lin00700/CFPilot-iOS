@@ -24,6 +24,12 @@ enum DataPlaneMode: String, Codable, CaseIterable, Identifiable {
     }
 }
 
+/// Cloudflare 账号（用结构体而不是元组：ForEach 的 id keypath 不能指向元组成员）
+struct CFAccount: Identifiable, Hashable {
+    let id: String
+    let name: String
+}
+
 /// 一次部署生成的凭据（与内核 KV 的 CONFIG 字段一致）
 struct DeployCredentials: Codable, Equatable {
     var panelPath: String

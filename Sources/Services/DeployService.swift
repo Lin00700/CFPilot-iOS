@@ -81,7 +81,7 @@ final class DeployService {
         // 1. 账号
         let accounts = try await api.listAccounts()
         guard !accounts.isEmpty else { throw DeployError.noAccount }
-        let account: (id: String, name: String)
+        let account: CFAccount
         if request.accountId.isEmpty {
             account = accounts[0]
         } else {

@@ -87,7 +87,7 @@ struct DeployWizardView: View {
 
                     if !vm.accounts.isEmpty {
                         Menu {
-                            ForEach(vm.accounts, id: \.id) { account in
+                            ForEach(vm.accounts) { account in
                                 Button(account.name + " · " + String(account.id.prefix(8))) {
                                     vm.accountId = account.id
                                 }
@@ -278,7 +278,7 @@ struct DeployWizardView: View {
                             .progressViewStyle(.circular)
                             .tint(.white)
                     } else {
-                        Image(systemName: "seal")
+                        Image(systemName: "checkmark.seal")
                     }
                     Text(vm.isRunning ? "部署中…" : (store.record == nil ? "开始一键部署" : "开始更新部署"))
                 }
