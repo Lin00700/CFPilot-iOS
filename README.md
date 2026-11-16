@@ -64,7 +64,7 @@ cp -R build/Build/Products/Release-iphoneos/CFPilot.app Payload/
 zip -qry CFPilot-unsigned.ipa Payload
 ```
 
-或用 `.github/workflows/build-ipa.yml` 在 GitHub Actions 的 macOS runner 上自动出包。
+或用仓库里的 `.github/workflows/build-ipa.yml`，在 GitHub Actions 的 macOS runner 上自动出包（未签名 IPA 走 Artifact 与 Release）。
 
 ## 目录
 
