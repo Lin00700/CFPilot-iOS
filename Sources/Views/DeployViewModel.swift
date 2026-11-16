@@ -21,7 +21,7 @@ final class DeployViewModel: ObservableObject {
     @Published var logs: [DeployLogEntry] = []
     @Published var isRunning: Bool = false
     @Published var finishedRecord: DeploymentRecord?
-    @Published var fatalError: String?
+    @Published var failureText: String?
     @Published var prepared: Bool = false
 
     /// 从本机记录预填（只在第一次进入时做）
@@ -78,12 +78,12 @@ final class DeployViewModel: ObservableObject {
         guard !isRunning else { return }
         let effectiveToken = token.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !effectiveToken.isEmpty else {
-            fatalError = "请先填写 Cloudflare API Token。"
+            failureText = "请先填写 Cloudflare API Token。"
             return
         }
 
         logs.removeAll()
-        fatalError = nil
+        failureText = nil
         finishedRecord = nil
         isRunning = true
 
@@ -124,7 +124,7 @@ final class DeployViewModel: ObservableObject {
                 let message = error.localizedDescription
                 await MainActor.run {
                     guard let self else { return }
-                    self.fatalError = message
+                    self.failureText = message
                     self.isRunning = false
                     self.logs.append(DeployLogEntry(level: .failure, title: "部署中止", detail: message))
                 }

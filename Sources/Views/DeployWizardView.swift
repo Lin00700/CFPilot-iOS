@@ -251,7 +251,7 @@ struct DeployWizardView: View {
                 resultCard(record)
             }
 
-            if let message = vm.fatalError {
+            if let message = vm.failureText {
                 InkCard {
                     VStack(alignment: .leading, spacing: 6) {
                         HStack(spacing: 8) {
