@@ -631,22 +631,23 @@ final class DeployService {
                 enabled: !hasCustomHost,
                 previewsEnabled: false
             )
-            await emit(
-                .success,
-                hasCustomHost ? "已关闭 workers.dev 链接" : "已开启 workers.dev 链接",
-                hasCustomHost ? "节点走自定义域名 \(customHost)" : "节点走 workers.dev"
-            )
+            let subdomainTitle = hasCustomHost ? "已关闭 workers.dev 链接" : "已开启 workers.dev 链接"
+            let subdomainDetail = hasCustomHost
+                ? "节点走自定义域名 " + customHost
+                : "节点走 workers.dev"
+            await emit(.success, subdomainTitle, subdomainDetail)
         } catch {
-            await emit(
-                .warning,
-                "workers.dev 链接开关设置失败",
-                "请到控制台 → Workers → \(name) → 设置 → 域和路由 手动处理，否则节点可能全部连不上。\(\(error.localizedDescription))"
-            )
+            let failureDetail = error.localizedDescription
+            let hint = "请到控制台 → Workers → " + name
+                + " → 设置 → 域和路由 手动处理，否则节点可能全部连不上。"
+                + failureDetail
+            await emit(.warning, "workers.dev 链接开关设置失败", hint)
         }
 
         if hasCustomHost { return customHost }
 
         let sub = (try? await api.workersSubdomain(accountId: accountId)) ?? ""
-        return sub.isEmpty ? "\(name).workers.dev" : "\(name).\(sub).workers.dev"
+        if sub.isEmpty { return name + ".workers.dev" }
+        return name + "." + sub + ".workers.dev"
     }
 }
