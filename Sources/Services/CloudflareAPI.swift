@@ -168,7 +168,7 @@ final class CloudflareAPI {
 
         guard let parsed = try? JSONSerialization.jsonObject(with: data, options: []) else {
             if status >= 400 {
-                throw CFAPIError(status: status, code: nil, message: text.prefix(200).description)
+                throw CFAPIError(status: status, code: nil, message: String(text.prefix(200)))
             }
             return nil
         }
@@ -214,11 +214,13 @@ final class CloudflareAPI {
             method: "GET",
             path: "/accounts/\(accountId)/storage/kv/namespaces?per_page=100"
         )
-        return JSONHelper.dictionaryArray(result).compactMap { item in
+        var namespaces: [(id: String, title: String)] = []
+        for item in JSONHelper.dictionaryArray(result) {
             let id = JSONHelper.string(item["id"])
-            guard !id.isEmpty else { return nil }
-            return (id, JSONHelper.string(item["title"]))
+            if id.isEmpty { continue }
+            namespaces.append((id: id, title: JSONHelper.string(item["title"])))
         }
+        return namespaces
     }
 
     func createKVNamespace(accountId: String, title: String) async throws -> (id: String, title: String) {
